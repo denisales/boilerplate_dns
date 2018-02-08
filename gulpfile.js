@@ -16,7 +16,7 @@ var cleanDest = require('gulp-clean-dest')
 // var concat   = require('gulp-concat')
 // var fonts2css = require('gulp-fonts2css')
 
-gulp.task('serve', ['styles-pac', 'image-pac', 'render', 'js-pac',], function() {
+gulp.task('serve', ['styles-pac', 'image-pac', 'render', 'js-pac', 'fonts',], function() {
 
     browserSync.init({
         server: "./dist"
@@ -24,7 +24,7 @@ gulp.task('serve', ['styles-pac', 'image-pac', 'render', 'js-pac',], function() 
     gulp.watch("src/assets/scss/**/*.scss", ['styles-pac']);
     gulp.watch("src/assets/js/**/*.js", ['js-pac']);
     gulp.watch("src/assets/img/**/*.jpg", ['image-pac']);
-    // gulp.watch("src/assets/fonts/**/*.{otf,ttf,woff,woff2}", ['fonts2css']);
+    gulp.watch("src/assets/fonts/**/*.{otf,ttf,woff,woff2}",['fonts']);
     gulp.watch("src/view/**/*.html", ['render']).on('change', browserSync.reload);
     gulp.watch("dist/view/**/*.html").on('change', browserSync.reload);
 });
@@ -82,6 +82,13 @@ gulp.task('js-pac', () => {
     .pipe(browserSync.stream());
 });
 
+
+gulp.task('fonts', () =>{
+    gulp.src('src/assets/fonts/')
+    .pipe(watch('src/assets/fonts/'))
+    .pipe(cleanDest('dist/'))
+    .pipe(gulp.dest('dist/'));
+});
 // gulp.task('stream', () =>{
 //     gulp.src('src/assets')
 //     .pipe(watch(['src/assets/*', '!src/assets/scss']))
